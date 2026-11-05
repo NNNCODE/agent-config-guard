@@ -2,6 +2,7 @@
 import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
 import * as vscode from 'vscode';
+import { registerActions } from './actions/commands';
 import { pruneClaims } from './core/claim';
 import { Monitor, type CheckReport, type PendingChange } from './core/monitor';
 import { BaselineStore } from './core/store';
@@ -37,6 +38,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<TestAp
   });
   controller = new Controller(store, monitor);
   context.subscriptions.push(controller);
+  registerActions(controller, storageDir, () => undefined);
   await controller.start({ promptForBaseline: !testMode });
 
   if (!testMode) return undefined;

@@ -89,12 +89,32 @@
         "title": "%cmd.showDiff%",
         "category": "Agent Config Guard",
         "icon": "$(diff)"
+      },
+      {
+        "command": "agentConfigGuard.accept",
+        "title": "%cmd.accept%",
+        "category": "Agent Config Guard",
+        "icon": "$(check)"
+      },
+      {
+        "command": "agentConfigGuard.revert",
+        "title": "%cmd.revert%",
+        "category": "Agent Config Guard",
+        "icon": "$(discard)"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "agentConfigGuard.showDiff",
+          "when": "false"
+        },
+        {
+          "command": "agentConfigGuard.accept",
+          "when": "false"
+        },
+        {
+          "command": "agentConfigGuard.revert",
           "when": "false"
         }
       ],
@@ -117,9 +137,29 @@
           "group": "inline@1"
         },
         {
+          "command": "agentConfigGuard.accept",
+          "when": "view == agentConfigGuard.changes && viewItem == file.pending",
+          "group": "inline@2"
+        },
+        {
+          "command": "agentConfigGuard.revert",
+          "when": "view == agentConfigGuard.changes && viewItem == file.pending",
+          "group": "inline@3"
+        },
+        {
           "command": "agentConfigGuard.showDiff",
           "when": "view == agentConfigGuard.changes && viewItem == file.pending",
           "group": "1_review@1"
+        },
+        {
+          "command": "agentConfigGuard.accept",
+          "when": "view == agentConfigGuard.changes && viewItem == file.pending",
+          "group": "1_review@2"
+        },
+        {
+          "command": "agentConfigGuard.revert",
+          "when": "view == agentConfigGuard.changes && viewItem == file.pending",
+          "group": "1_review@3"
         }
       ]
     },

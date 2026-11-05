@@ -8,5 +8,7 @@
   "cmd.checkNow": "Check now",
   "cmd.showDiff": "View diff",
   "config.pollIntervalSeconds": "Seconds between full re-checks, as a fallback for missed file events. `0` turns polling off.",
-  "config.autoAcceptLowRisk": "Accept low-risk changes (for example a model or theme switch) automatically. They are still written to the change log."
+  "config.autoAcceptLowRisk": "Accept low-risk changes (for example a model or theme switch) automatically. They are still written to the change log.",
+  "cmd.accept": "Accept change",
+  "cmd.revert": "Revert to baseline"
 }

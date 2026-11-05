@@ -91,6 +91,17 @@ const en = {
   'ui.checkNone': 'No changes found.',
   'ui.checkFound': '{count} pending change(s).',
   'ui.needBaseline': 'Create a baseline first.',
+  'ui.accept': 'Accept',
+  'ui.revert': 'Revert',
+  'ui.accepted': 'Accepted the change to {file}; it is now the baseline.',
+  'ui.reverted': 'Reverted {file}. The changed version was saved as {backup}.',
+  'ui.revertedNoBackup': 'Reverted {file}.',
+  'ui.revertedRemoved': 'Reverted {file}: it was not in the baseline, so it was removed. The removed version was saved as {backup}.',
+  'ui.revertPartial': 'Reverted {file}, but these could not be restored because their content was never stored: {items}.',
+  'ui.revertFailed': 'Could not revert {file}: {error}',
+  'ui.revertStillDiffers': 'Reverted {file}, but it still differs from the baseline (another program may have written it again).',
+  'ui.noBaselineFor': 'There is no baseline for this file.',
+  'ui.notStoredRevert': 'Its baseline content was not stored (file over 5 MB).',
 } as const;
 
 export type MessageKey = keyof typeof en;
@@ -174,6 +185,17 @@ const zh: Record<MessageKey, string> = {
   'ui.checkNone': '没有发现改动。',
   'ui.checkFound': '有 {count} 处待处理的改动。',
   'ui.needBaseline': '请先建立基线。',
+  'ui.accept': '接受',
+  'ui.revert': '还原',
+  'ui.accepted': '已接受 {file} 的改动，现在它就是基线。',
+  'ui.reverted': '已还原 {file}。改动后的版本已备份为 {backup}。',
+  'ui.revertedNoBackup': '已还原 {file}。',
+  'ui.revertedRemoved': '已还原 {file}：基线里没有这个文件，所以已删除。删除前的版本已备份为 {backup}。',
+  'ui.revertPartial': '已还原 {file}，但以下内容从未保存过，无法恢复：{items}。',
+  'ui.revertFailed': '无法还原 {file}：{error}',
+  'ui.revertStillDiffers': '已还原 {file}，但它仍和基线不同（可能又被别的程序写回去了）。',
+  'ui.noBaselineFor': '这个文件没有基线。',
+  'ui.notStoredRevert': '基线内容未保存（文件超过 5 MB）。',
 };
 
 let current: Record<MessageKey, string> = en;

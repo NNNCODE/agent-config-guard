@@ -8,5 +8,7 @@
   "cmd.checkNow": "立即检查",
   "cmd.showDiff": "查看差异",
   "config.pollIntervalSeconds": "两次完整复查之间的秒数，用来补漏掉的文件事件。设为 `0` 关闭轮询。",
-  "config.autoAcceptLowRisk": "自动接受低风险改动（例如切换模型或主题），这些改动仍会写入变更记录。"
+  "config.autoAcceptLowRisk": "自动接受低风险改动（例如切换模型或主题），这些改动仍会写入变更记录。",
+  "cmd.accept": "接受改动",
+  "cmd.revert": "还原到基线"
 }
