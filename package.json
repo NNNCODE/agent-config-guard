@@ -1,7 +1,7 @@
 {
   "name": "agent-config-guard",
-  "displayName": "Agent Config Guard",
-  "description": "Detects silent changes to coding-agent configs (Claude Code, Codex, Cursor, Copilot, OpenCode), flags risky ones, and lets you accept or revert them.",
+  "displayName": "%displayName%",
+  "description": "%description%",
   "version": "0.1.0",
   "publisher": "agent-config-guard",
   "license": "MIT",
@@ -30,5 +30,114 @@
     "@types/vscode": "1.100.0",
     "esbuild": "0.28.2",
     "typescript": "7.0.2"
+  },
+  "keywords": [
+    "claude code",
+    "codex",
+    "cursor",
+    "copilot",
+    "opencode",
+    "mcp",
+    "hooks",
+    "security"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "agentConfigGuard",
+          "title": "%view.container%",
+          "icon": "media/shield.svg"
+        }
+      ]
+    },
+    "views": {
+      "agentConfigGuard": [
+        {
+          "id": "agentConfigGuard.changes",
+          "name": "%view.changes%"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "agentConfigGuard.changes",
+        "contents": "%view.welcome%",
+        "when": "agentConfigGuard.noBaseline"
+      }
+    ],
+    "commands": [
+      {
+        "command": "agentConfigGuard.createBaseline",
+        "title": "%cmd.createBaseline%",
+        "category": "Agent Config Guard"
+      },
+      {
+        "command": "agentConfigGuard.checkNow",
+        "title": "%cmd.checkNow%",
+        "category": "Agent Config Guard",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "agentConfigGuard.showDiff",
+        "title": "%cmd.showDiff%",
+        "category": "Agent Config Guard",
+        "icon": "$(diff)"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "agentConfigGuard.showDiff",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "agentConfigGuard.checkNow",
+          "when": "view == agentConfigGuard.changes",
+          "group": "navigation@1"
+        },
+        {
+          "command": "agentConfigGuard.createBaseline",
+          "when": "view == agentConfigGuard.changes",
+          "group": "9_baseline"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "agentConfigGuard.showDiff",
+          "when": "view == agentConfigGuard.changes && viewItem == file.pending",
+          "group": "inline@1"
+        },
+        {
+          "command": "agentConfigGuard.showDiff",
+          "when": "view == agentConfigGuard.changes && viewItem == file.pending",
+          "group": "1_review@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Agent Config Guard",
+      "properties": {
+        "agentConfigGuard.pollIntervalSeconds": {
+          "type": "number",
+          "default": 60,
+          "minimum": 0,
+          "markdownDescription": "%config.pollIntervalSeconds%"
+        },
+        "agentConfigGuard.autoAcceptLowRisk": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "%config.autoAcceptLowRisk%"
+        }
+      }
+    }
   }
 }

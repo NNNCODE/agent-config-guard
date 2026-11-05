@@ -1,0 +1,12 @@
+{
+  "displayName": "Agent Config Guard",
+  "description": "发现编码 Agent 配置（Claude Code、Codex、Cursor、GitHub Copilot、OpenCode）被悄悄改动，标出新增钩子、插件、MCP 服务器等高风险项，让你接受或还原。",
+  "view.container": "Agent Config Guard",
+  "view.changes": "Agent 配置",
+  "view.welcome": "还没有基线。Agent Config Guard 会记下编码 Agent 配置的当前状态，之后有东西改动它们时告诉你。\n内容只存在本机。\n[建立基线](command:agentConfigGuard.createBaseline)",
+  "cmd.createBaseline": "建立或重建基线",
+  "cmd.checkNow": "立即检查",
+  "cmd.showDiff": "查看差异",
+  "config.pollIntervalSeconds": "两次完整复查之间的秒数，用来补漏掉的文件事件。设为 `0` 关闭轮询。",
+  "config.autoAcceptLowRisk": "自动接受低风险改动（例如切换模型或主题），这些改动仍会写入变更记录。"
+}

@@ -1,0 +1,12 @@
+{
+  "displayName": "Agent Config Guard",
+  "description": "Detects silent changes to coding-agent configs (Claude Code, Codex, Cursor, GitHub Copilot, OpenCode), flags risky ones such as new hooks, plugins and MCP servers, and lets you accept or revert them.",
+  "view.container": "Agent Config Guard",
+  "view.changes": "Agent configs",
+  "view.welcome": "No baseline yet. Agent Config Guard records the current state of your coding-agent configs, then tells you when something changes them.\nContents are stored only on this computer.\n[Create baseline](command:agentConfigGuard.createBaseline)",
+  "cmd.createBaseline": "Create or recreate baseline",
+  "cmd.checkNow": "Check now",
+  "cmd.showDiff": "View diff",
+  "config.pollIntervalSeconds": "Seconds between full re-checks, as a fallback for missed file events. `0` turns polling off.",
+  "config.autoAcceptLowRisk": "Accept low-risk changes (for example a model or theme switch) automatically. They are still written to the change log."
+}
