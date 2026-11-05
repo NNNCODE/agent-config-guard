@@ -107,3 +107,46 @@ export interface DirSnapshot {
 }
 
 export type Snapshot = FileSnapshot | DirSnapshot;
+
+export type ChangeKind = 'added' | 'modified' | 'deleted';
+
+export interface EntryChanges {
+  added: DirEntry[];
+  removed: DirEntry[];
+  modified: Array<{ before: DirEntry; after: DirEntry }>;
+}
+
+/** A difference between the baseline and the current state of one target. */
+export interface Change {
+  target: Target;
+  kind: ChangeKind;
+  before: Snapshot;
+  after: Snapshot;
+  /** Directory targets only. */
+  entries?: EntryChanges;
+}
+
+export type RiskLevel = 'low' | 'medium' | 'high';
+
+export interface Finding {
+  /** Rule id, e.g. 'hooks', 'preapproval'. */
+  rule: string;
+  level: RiskLevel;
+  /** One sentence explaining why this matters. */
+  reason: string;
+  /** Key path or entry the finding is about, e.g. 'hooks.SessionStart' or 'postman/postman'. */
+  where?: string;
+  /** Extra weight inside the level, e.g. an MCP server launched through npx. */
+  escalated?: boolean;
+}
+
+export interface Assessment {
+  level: RiskLevel;
+  findings: Finding[];
+}
+
+export const LEVEL_ORDER: Record<RiskLevel, number> = { low: 0, medium: 1, high: 2 };
+
+export function maxLevel(levels: RiskLevel[]): RiskLevel {
+  return levels.reduce<RiskLevel>((acc, l) => (LEVEL_ORDER[l] > LEVEL_ORDER[acc] ? l : acc), 'low');
+}
