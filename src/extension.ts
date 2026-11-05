@@ -37,6 +37,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<TestAp
     claimsDir,
     assess: (change) => assess(change),
     autoAcceptLow: () => vscode.workspace.getConfiguration('agentConfigGuard').get<boolean>('autoAcceptLowRisk', true),
+    stableMs: 300,
   });
   controller = new Controller(store, monitor);
   context.subscriptions.push(controller);

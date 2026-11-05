@@ -261,6 +261,10 @@ describe('engine', () => {
     assert.deepEqual(tags(a), ['medium:parse']);
   });
 
+  test('emptied file → medium, so it is never auto-accepted', async () => {
+    assert.deepEqual(tags(await run(fileChange('codex.config', 'model = "x"\n', ''))), ['medium:emptied']);
+  });
+
   test('deleted file → low', async () => {
     assert.deepEqual(tags(await run(fileChange('cursor.mcp', json({ mcpServers: {} }), undefined))), ['low:other']);
   });

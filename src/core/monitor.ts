@@ -34,6 +34,11 @@ export interface MonitorOptions {
   assess: (change: Change) => Assessment | Promise<Assessment>;
   autoAcceptLow: () => boolean;
   now?: () => Date;
+  /**
+   * Before acting on a difference, wait this long and re-read: a writer that truncates and then
+   * writes must not be caught half-way (an empty file would otherwise be auto-accepted as low risk).
+   */
+  stableMs?: number;
 }
 
 export class Monitor {
@@ -102,6 +107,18 @@ export class Monitor {
 
       const known = this.pending.get(target.key);
       if (known && known.change.kind === result && known.change.after.hash === current.hash) continue;
+
+      if (this.opts.stableMs) {
+        await new Promise((r) => setTimeout(r, this.opts.stableMs));
+        let again: Snapshot;
+        try {
+          again = await scanTarget(target);
+        } catch {
+          continue;
+        }
+        // Still being written: the watcher event for the final write triggers another check.
+        if (again.exists !== current.exists || again.hash !== current.hash) continue;
+      }
 
       const before = await store.snapshotOf(record!);
       const change: Change = { target, kind: result, before, after: current };

@@ -37,6 +37,10 @@ function runDocRules(q: DocQuery): Finding[] {
 
 function assessFile(target: Target, kind: Change['kind'], before: FileSnapshot, after: FileSnapshot, file: string, inDir: boolean): Finding[] {
   if (before.tooLarge || after.tooLarge) return [{ rule: 'size', level: 'medium', reason: t('file.tooLarge'), where: file }];
+  // A config wiped to nothing is never "low": it must not be auto-accepted.
+  if (after.exists && !(after.content ?? '').trim() && before.exists && (before.content ?? '').trim()) {
+    return [{ rule: 'emptied', level: 'medium', reason: t('other.emptied'), where: file }];
+  }
   const beforeDoc = parseContent(before.exists ? before.content : undefined, storedFormat(target, before));
   const afterDoc = parseContent(after.exists ? after.content : undefined, storedFormat(target, after));
   const format = storedFormat(target, after.exists ? after : before) ?? 'text';

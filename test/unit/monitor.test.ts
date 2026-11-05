@@ -197,6 +197,25 @@ describe('Monitor', () => {
     assert.equal(after.kind === 'file' && after.content, 'a = 3\n');
   });
 
+  test('a file caught half-way through a write is not acted on (stableMs)', async () => {
+    const store = new BaselineStore(path.join(dir, 'storage', 'baseline'));
+    const monitor = new Monitor({ store, claimsDir: path.join(dir, 'storage', 'claims'), assess: () => ({ level: 'low', findings: [] }), autoAcceptLow: () => true, stableMs: 150 });
+    const t = fileTarget('config.toml');
+    await writeFile(t.path, 'a = 1\nb = 2\n');
+    await createBaseline(store, [t]);
+    await writeFile(t.path, ''); // truncated, the writer is still busy
+    const checking = monitor.check([t]);
+    await new Promise((r) => setTimeout(r, 30));
+    await writeFile(t.path, 'a = 1\nb = 3\n'); // write finished
+    const first = await checking;
+    assert.equal(first.autoAccepted.length + first.detected.length, 0, 'the empty intermediate state was skipped');
+    assert.equal(store.record(t.key)?.hash !== undefined, true);
+    const second = await monitor.check([t]);
+    assert.equal(second.autoAccepted.length, 1);
+    const accepted = second.autoAccepted[0].change.after;
+    assert.equal(accepted.kind === 'file' && accepted.content, 'a = 1\nb = 3\n');
+  });
+
   test('pending list listeners and retain()', async () => {
     const { store, monitor } = makeMonitor();
     const a = fileTarget('a.toml');
