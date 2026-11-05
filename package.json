@@ -101,6 +101,12 @@
         "title": "%cmd.revert%",
         "category": "Agent Config Guard",
         "icon": "$(discard)"
+      },
+      {
+        "command": "agentConfigGuard.exportLog",
+        "title": "%cmd.exportLog%",
+        "category": "Agent Config Guard",
+        "icon": "$(export)"
       }
     ],
     "menus": {
@@ -128,6 +134,11 @@
           "command": "agentConfigGuard.createBaseline",
           "when": "view == agentConfigGuard.changes",
           "group": "9_baseline"
+        },
+        {
+          "command": "agentConfigGuard.exportLog",
+          "when": "view == agentConfigGuard.changes",
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [

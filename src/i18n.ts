@@ -102,6 +102,9 @@ const en = {
   'ui.revertStillDiffers': 'Reverted {file}, but it still differs from the baseline (another program may have written it again).',
   'ui.noBaselineFor': 'There is no baseline for this file.',
   'ui.notStoredRevert': 'Its baseline content was not stored (file over 5 MB).',
+  'ui.exported': 'Exported {count} change log entries to {file}.',
+  'ui.exportEmpty': 'The change log is empty.',
+  'log.baselineCreated': 'Baseline created: {files} file(s) from {agents} agent(s).',
 } as const;
 
 export type MessageKey = keyof typeof en;
@@ -196,6 +199,9 @@ const zh: Record<MessageKey, string> = {
   'ui.revertStillDiffers': '已还原 {file}，但它仍和基线不同（可能又被别的程序写回去了）。',
   'ui.noBaselineFor': '这个文件没有基线。',
   'ui.notStoredRevert': '基线内容未保存（文件超过 5 MB）。',
+  'ui.exported': '已导出 {count} 条变更记录到 {file}。',
+  'ui.exportEmpty': '变更记录是空的。',
+  'log.baselineCreated': '基线已建立：{agents} 个 Agent 的 {files} 个文件。',
 };
 
 let current: Record<MessageKey, string> = en;

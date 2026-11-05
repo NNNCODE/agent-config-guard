@@ -43,6 +43,7 @@ export class Controller implements vscode.Disposable {
   private readonly disposables: vscode.Disposable[] = [];
   /** Extension points filled in by later modules (change log). */
   readonly reportListeners: Array<(report: CheckReport) => void | Promise<void>> = [];
+  readonly baselineListeners: Array<(counts: { files: number; agents: number }) => void | Promise<void>> = [];
 
   constructor(
     readonly store: BaselineStore,
@@ -175,6 +176,7 @@ export class Controller implements vscode.Disposable {
     this.startWatching();
     await this.refreshViews();
     const { files, agents } = countExisting(results);
+    for (const l of this.baselineListeners) await l({ files, agents });
     void this.notifier.show({ level: 'info', message: t('ui.baselineCreated', { files, agents }), actions: [] });
   }
 

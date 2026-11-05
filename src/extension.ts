@@ -8,6 +8,8 @@ import { Monitor, type CheckReport, type PendingChange } from './core/monitor';
 import { BaselineStore } from './core/store';
 import { Controller } from './controller';
 import { setLanguage } from './i18n';
+import { Journal } from './log/journal';
+import { wireJournal } from './log/wire';
 import { assess } from './risk/engine';
 import type { NotifyRecord } from './ui/notify';
 
@@ -38,7 +40,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<TestAp
   });
   controller = new Controller(store, monitor);
   context.subscriptions.push(controller);
-  registerActions(controller, storageDir, () => undefined);
+  const journal = new Journal(path.join(storageDir, 'journal.jsonl'));
+  const { onAction } = wireJournal(controller, journal);
+  registerActions(controller, storageDir, onAction);
   await controller.start({ promptForBaseline: !testMode });
 
   if (!testMode) return undefined;
