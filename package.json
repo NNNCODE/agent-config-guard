@@ -19,7 +19,8 @@
     "build": "node esbuild.mjs",
     "typecheck": "tsc -p . --noEmit",
     "compile-tests": "tsc -p .",
-    "test": "npm run compile-tests && node --test --test-reporter=tap \"out/test/unit/**/*.test.js\""
+    "test": "npm run compile-tests && node --test --test-reporter=tap \"out/test/unit/**/*.test.js\"",
+    "test:integration": "npm run build && npm run compile-tests && node out/test/integration/runTest.js"
   },
   "dependencies": {
     "jsonc-parser": "3.3.1",
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@types/node": "20.19.43",
     "@types/vscode": "1.100.0",
+    "@vscode/test-electron": "3.1.0",
     "esbuild": "0.28.2",
     "typescript": "7.0.2"
   },
