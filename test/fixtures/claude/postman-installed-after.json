@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "plugins": {
+    "vercel@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/example/.claude/plugins/cache/claude-plugins-official/vercel/1.4.0",
+        "version": "1.4.0",
+        "installedAt": "2026-09-01T10:00:00.000Z",
+        "lastUpdated": "2026-09-01T10:00:00.000Z",
+        "gitCommitSha": "0000000000000000000000000000000000000001"
+      }
+    ],
+    "postman@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "/home/example/.claude/plugins/cache/claude-plugins-official/postman/2.0.1",
+        "version": "2.0.1",
+        "installedAt": "2026-10-24T09:34:02.610Z",
+        "lastUpdated": "2026-10-24T09:34:02.610Z",
+        "gitCommitSha": "0000000000000000000000000000000000000002"
+      }
+    ]
+  }
+}

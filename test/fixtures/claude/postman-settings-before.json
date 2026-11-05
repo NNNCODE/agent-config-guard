@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": ["Bash(npm run test:*)"],
+    "deny": ["Read(./.env)"]
+  },
+  "model": "opus",
+  "enabledPlugins": {
+    "vercel@claude-plugins-official": true
+  },
+  "effortLevel": "high"
+}

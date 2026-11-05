@@ -1,0 +1,40 @@
+# Shape of a real ~/.codex/config.toml (Codex desktop, Windows); values are made up.
+model = "gpt-5.5"
+model_reasoning_effort = "high"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+notify = ["C:\\Users\\example\\.codex\\notify.exe", "--quiet"]
+
+[windows]
+sandbox = "elevated"
+
+[projects.'d:\example-project']
+trust_level = "trusted"
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "C:\\Users\\example\\.codex\\bundled\\openai-bundled"
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[features]
+js_repl = true
+
+[mcp_servers.node_repl]
+command = "node"
+args = ["repl.js"]
+startup_timeout_sec = 30
+
+# The three sections below are copied verbatim from postmanlabs/postman-app-support#14370
+# (Postman desktop 12.33.4, 2026-10-24): what Postman wrote into ~/.codex/config.toml.
+[marketplaces.postman]
+source_type = "git"
+source = "https://github.com/postmanlabs/postman-plugin.git"
+
+[plugins."postman@postman"]
+enabled = true
+
+[hooks.state."postman@postman:hooks/codex-hooks.json:session_start:0:0"]
+trusted_hash = "sha256:b67ddd1ece328f5a6f9103ce011bb58adb8411daea644f284732cff85d15cbb3"
+trusted_content_hash = "sha256:f3d02e32c39b39feaca37aec2b9bdbd308b6a2b7b3f7d2c52a0060e69eb9c345"

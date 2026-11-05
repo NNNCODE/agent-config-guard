@@ -31,7 +31,7 @@ export interface CheckReport {
 export interface MonitorOptions {
   store: BaselineStore;
   claimsDir: string;
-  assess: (change: Change) => Assessment;
+  assess: (change: Change) => Assessment | Promise<Assessment>;
   autoAcceptLow: () => boolean;
   now?: () => Date;
 }
@@ -106,7 +106,7 @@ export class Monitor {
       const before = await store.snapshotOf(record!);
       const change: Change = { target, kind: result, before, after: current };
       if (before.kind === 'dir' && current.kind === 'dir') change.entries = diffEntries(before.entries, current.entries);
-      const assessment = this.opts.assess(change);
+      const assessment = await this.opts.assess(change);
       const claim = claimId(target.key, current.hash);
       if (known) await releaseClaim(this.opts.claimsDir, known.claim);
 
