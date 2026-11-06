@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { promises as fs } from 'node:fs';
 import * as path from 'node:path';
 import { afterEach, beforeEach, describe, test } from 'node:test';
-import { createBaseline } from '../../src/core/baseline';
+import { createBaseline, firstRunAction } from '../../src/core/baseline';
 import { scanDir, scanFile } from '../../src/core/scan';
 import { BaselineStore, withLock } from '../../src/core/store';
 import type { Target } from '../../src/core/types';
@@ -130,5 +130,21 @@ describe('withLock', () => {
     const old = new Date(Date.now() - 60_000);
     await fs.utimes(lock, old, old);
     assert.equal(await withLock(lock, async () => 'ok'), 'ok');
+  });
+});
+
+describe('first-run prompt clicked late', () => {
+  test('no baseline yet → create it', () => {
+    assert.equal(firstRunAction(false, 0), 'create');
+  });
+
+  test('baseline exists and changes are pending → ask before recreating', () => {
+    // Seen in a real window: baseline created from the sidebar, Postman's change pending, then the
+    // old prompt clicked from the notification center silently made the change the baseline.
+    assert.equal(firstRunAction(true, 1), 'confirm-recreate');
+  });
+
+  test('baseline exists and nothing is pending → do nothing', () => {
+    assert.equal(firstRunAction(true, 0), 'nothing');
   });
 });

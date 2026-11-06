@@ -28,6 +28,18 @@ export function countExisting(results: ScanResult[]): { files: number; agents: n
   return { files: existing.length, agents: new Set(existing.map((r) => r.target.agent)).size };
 }
 
+/**
+ * What the first-run prompt's "Create baseline" button does when clicked. The prompt stays in the
+ * notification center, so it can be clicked long after a baseline was created from the sidebar or
+ * in another window. Recreating then would turn pending changes into the baseline, so that needs
+ * the same confirmation as the "Create or recreate baseline" command. The caller reads the
+ * baseline from disk and checks the files first, so both arguments are current.
+ */
+export function firstRunAction(hasBaseline: boolean, pendingCount: number): 'create' | 'confirm-recreate' | 'nothing' {
+  if (!hasBaseline) return 'create';
+  return pendingCount > 0 ? 'confirm-recreate' : 'nothing';
+}
+
 /** (Re)creates the baseline from scratch for the given targets. */
 export async function createBaseline(store: BaselineStore, targets: Target[]): Promise<ScanResult[]> {
   const results = await scanAll(targets);

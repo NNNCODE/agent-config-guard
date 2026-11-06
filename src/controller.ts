@@ -4,7 +4,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as vscode from 'vscode';
 import { ALL_TARGET_SPECS } from './agents';
-import { countExisting, createBaseline, scanAll } from './core/baseline';
+import { countExisting, createBaseline, firstRunAction, scanAll } from './core/baseline';
 import type { CheckReport, Monitor, PendingChange } from './core/monitor';
 import { scopeLabel, singleMessage, snapshotText } from './core/render';
 import { scanTarget } from './core/scan';
@@ -161,14 +161,34 @@ export class Controller implements vscode.Disposable {
     const { files, agents } = countExisting(await scanAll(this.targets));
     const create = t('ui.createBaseline');
     const choice = await this.notifier.show({ level: 'info', message: t('ui.firstRun', { files, agents }), actions: [create, t('ui.notNow')] });
-    if (choice === create) await this.createBaseline({ confirm: false });
+    if (choice !== create) return;
+    await this.syncWithDisk();
+    const action = firstRunAction(!!this.store.index, this.monitor.pendingChanges.length);
+    if (action !== 'nothing') await this.createBaseline({ confirm: action === 'confirm-recreate' });
+  }
+
+  /**
+   * Reads the baseline again and, when there is one, starts monitoring and checks the files.
+   * Another window may have created the baseline or found changes since this window last looked;
+   * a window that started without a baseline never reads it again on its own.
+   */
+  private async syncWithDisk(): Promise<void> {
+    if (!(await this.store.load())) return;
+    this.startWatching();
+    await this.check(this.targets);
+    await this.refreshViews();
   }
 
   async createBaseline(opts: { confirm: boolean }): Promise<void> {
-    if (opts.confirm && this.store.index) {
-      const recreate = t('ui.recreate');
-      const choice = await vscode.window.showWarningMessage(t('ui.recreateConfirm', { count: this.monitor.pendingChanges.length }), { modal: true }, recreate);
-      if (choice !== recreate) return;
+    if (opts.confirm) {
+      // Without this, a window that has not seen the baseline yet would recreate it without asking,
+      // and the count below would miss changes found by other windows.
+      await this.syncWithDisk();
+      if (this.store.index) {
+        const recreate = t('ui.recreate');
+        const choice = await vscode.window.showWarningMessage(t('ui.recreateConfirm', { count: this.monitor.pendingChanges.length }), { modal: true }, recreate);
+        if (choice !== recreate) return;
+      }
     }
     const results = await createBaseline(this.store, this.targets);
     for (const r of results) if (r.error) this.log.warn(`${r.target.path}: ${r.error}`);
