@@ -8,7 +8,7 @@ import * as vscode from 'vscode';
 import type { TestApi } from '../../../src/extension';
 import type { NotifyRecord } from '../../../src/ui/notify';
 
-const EXTENSION_ID = 'agent-config-guard.agent-config-guard';
+const EXTENSION_ID = 'NNNCODE.agent-config-guard';
 
 function waitFor<T>(event: vscode.Event<T>, predicate: (e: T) => boolean, timeoutMs: number, what: string): Promise<T> {
   return new Promise((resolve, reject) => {
