@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- New icon: a shield holding a pair of braces. The sidebar icon uses the same shape.
+
 ## 0.1.0
 
 First version.
